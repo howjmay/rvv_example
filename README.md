@@ -16,7 +16,7 @@ links all needed libraries into the main program. This is more convenient for
 running on emulators or downloading to a microcontroller-style boars, but will
 also work on a native RISC-V Linux system.
 
-Your favourite software repository might have a recent enough RISC-V toolchain,
+Your favorite software repository might have a recent enough RISC-V toolchain,
 but maybe not as the B and V extensions are still quite new as I write this.
 
 Check out the latest version from https://github.com/riscv-collab/riscv-gnu-toolchain
@@ -25,12 +25,11 @@ Support for B and V extensions are already included in master branch.
 
 Follow the instructions there, or copy what I use:
 
-    # first install any neccessary packages for your OS, then....
+    # first install any necessary packages for your OS, then....
     git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git --recursive
     cd riscv-gnu-toolchain
     ./configure 
     make
-    make build-qemu
 
 Notes:
 
@@ -52,15 +51,22 @@ Just type "make"
 
 Expected output:
 
-    $ make
-    riscv64-unknown-elf-gcc -O main.c vec.S -o main -march=rv64gcv_zba -lm
-    qemu-riscv64 -cpu rv64,v=true,zba=true,vlen=128 ./main
-    3.741657 3.741657
-    8.774964 8.774964
-    13.928389 13.928389
-    19.104973 19.104973
-    24.289915 24.289915
-    29.478806 29.478806
+```bash
+$ make build
+riscv64-unknown-elf-gcc -O main.c vec.S -o main -march=rv64gcv_zba -lm
+```
+
+```bash
+$ make run
+spike --isa=rv64gcv_zba pk ./main  
+bbl loader
+3.741657 3.741657
+8.774964 8.774964
+13.928389 13.928389
+19.104973 19.104973
+24.289915 24.289915
+29.478806 29.478806
+```
 
 You can trace the qemu execution by adding "-singlestep -d nochain,cpu" to the qemu command line.
 Cross-reference instruction addresses with the output from "riscv64-unknown-elf-objdump -d main".
